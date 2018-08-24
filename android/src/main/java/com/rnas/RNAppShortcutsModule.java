@@ -72,7 +72,7 @@ public class RNAppShortcutsModule extends ReactContextBaseJavaModule {
     public void removeShortcut(String id) {
         if (Build.VERSION.SDK_INT < 25) return;
 
-        ShortcutManager shortcutManager = getShortCutManager();
+        ShortcutManager shortcutManager = (ShortcutManager) getShortCutManager();
         shortcutManager.removeDynamicShortcuts(Arrays.asList(id));
     }
 
@@ -80,7 +80,7 @@ public class RNAppShortcutsModule extends ReactContextBaseJavaModule {
     public void removeAllShortcuts() {
         if (Build.VERSION.SDK_INT < 25) return;
 
-        ShortcutManager shortcutManager = getShortCutManager();
+        ShortcutManager shortcutManager = (ShortcutManager) getShortCutManager();
         shortcutManager.removeAllDynamicShortcuts();
     }
 
@@ -100,9 +100,9 @@ public class RNAppShortcutsModule extends ReactContextBaseJavaModule {
         if (Build.VERSION.SDK_INT < 25) return;
         if (isShortcutExist(shortcutDetails.getString(ID_KEY))) return;
 
-        ShortcutInfo shortcut = initShortcut(shortcutDetails);
+        ShortcutInfo shortcut = (ShortcutInfo) initShortcut(shortcutDetails);
 
-        ShortcutManager shortcutManager = getShortCutManager();
+        ShortcutManager shortcutManager = (ShortcutManager) getShortCutManager();
         shortcutManager.addDynamicShortcuts(Arrays.asList(shortcut));
     }
 
@@ -116,9 +116,9 @@ public class RNAppShortcutsModule extends ReactContextBaseJavaModule {
                 activityName = shortcutDetail.getString(ACTIVITY_NAME_KEY);
             }
 
-            ShortcutInfo shortcut = initShortcut(shortcutDetail);
+            ShortcutInfo shortcut = (ShortcutInfo) initShortcut(shortcutDetail);
 
-            ShortcutManager shortcutManager = getShortCutManager();
+            ShortcutManager shortcutManager = (ShortcutManager) getShortCutManager();
             shortcutManager.updateShortcuts(Arrays.asList(shortcut));
         } else {
             return;
@@ -126,7 +126,7 @@ public class RNAppShortcutsModule extends ReactContextBaseJavaModule {
     }
 
     @Nullable
-    private ShortcutInfo initShortcut(ReadableMap shortcutDetail) {
+    private Object initShortcut(ReadableMap shortcutDetail) {
         if (Build.VERSION.SDK_INT < 25) return null;
 
         String activityName = DEFAULT_ACTIVITY;
@@ -156,7 +156,7 @@ public class RNAppShortcutsModule extends ReactContextBaseJavaModule {
     private boolean isShortcutExist(String id) {
         if (Build.VERSION.SDK_INT < 25) return false;
 
-        ShortcutManager shortcutManager = getShortCutManager();
+        ShortcutManager shortcutManager = (ShortcutManager) getShortCutManager();
         List<ShortcutInfo> shortcutInfoList = shortcutManager.getDynamicShortcuts();
         for (ShortcutInfo shortcutInfo : shortcutInfoList) {
             if (shortcutInfo.getId().equals(id)) {
@@ -167,11 +167,11 @@ public class RNAppShortcutsModule extends ReactContextBaseJavaModule {
     }
 
     @Nullable
-    private ShortcutManager getShortCutManager() {
+    private Object getShortCutManager() {
         if (Build.VERSION.SDK_INT < 25) return null;
 
         Activity currentActivity = this.reactContext.getCurrentActivity();
-        ShortcutManager shortcutManager = currentActivity.getSystemService(ShortcutManager.class);
+        ShortcutManager shortcutManager = (ShortcutManager) currentActivity.getSystemService(Context.SHORTCUT_SERVICE);
 
         return shortcutManager;
     }
