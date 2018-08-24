@@ -139,6 +139,7 @@ public class RNAppShortcutsModule extends ReactContextBaseJavaModule {
         Intent intent = new Intent(currentActivity.getApplicationContext(), currentActivity.getClass());
         intent.putExtra("shortcutId", shortcutDetail.getString(ID_KEY));
         intent.setAction(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         Context currentContext = currentActivity.getApplicationContext();
         int iconId = currentContext.getResources().getIdentifier(shortcutDetail.getString(ICON_NAME_KEY), shortcutDetail.getString(ICON_FOLDER_KEY), currentContext.getPackageName());
