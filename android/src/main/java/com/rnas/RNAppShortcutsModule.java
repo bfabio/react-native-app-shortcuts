@@ -43,12 +43,18 @@ public class RNAppShortcutsModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void handleShortcut(Callback successCallback) {
-        if (Build.VERSION.SDK_INT < 25) return;
+        if (Build.VERSION.SDK_INT < 25) {
+          successCallback.invoke();
+          return;
+        }
 
         Activity currentActivity = this.reactContext.getCurrentActivity();
         String shortCutId = currentActivity.getIntent().getStringExtra("shortcutId");
-        if (shortCutId != null) {
-            successCallback.invoke(shortCutId);
+
+        if (shortCutId == null) {
+          successCallback.invoke();
+        } else {
+          successCallback.invoke(shortCutId);
         }
     }
 
