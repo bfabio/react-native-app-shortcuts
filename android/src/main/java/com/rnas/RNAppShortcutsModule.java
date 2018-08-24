@@ -59,6 +59,16 @@ public class RNAppShortcutsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void clearShortcutIntent() {
+      Activity currentActivity = this.reactContext.getCurrentActivity();
+
+      Intent intent = currentActivity.getIntent();
+      intent.removeExtra("shortcutId");
+
+      currentActivity.setIntent(intent);
+    }
+
+    @ReactMethod
     public void removeShortcut(String id) {
         if (Build.VERSION.SDK_INT < 25) return;
 
